@@ -15,6 +15,7 @@ jobs:
         
       - name: View content of artifacts
         run: ls -R
+        
   build-project:
     name: Build project
     runs-on: ubuntu-latest
