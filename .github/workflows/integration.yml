@@ -12,16 +12,24 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: static-site
-        
+
       - name: View content of artifacts
         run: ls -R
-        
+
       - name: Archive static content
         uses: thedoctor0/zip-release@master
         with:
-          type: 'zip'
-          filename: 'site.zip'
-          exclusions: '*.git* /*node_modules/* .editorconfig'
+          type: "zip"
+          filename: "site.zip"
+          exclusions: "*.git* /*node_modules/* .editorconfig"
+
+      - name: Create Github release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag-name: ${{ github.run_number }}
+          release_name: Release ${{ github.run_number }}
 
   build-project:
     name: Build project
@@ -29,7 +37,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      
+
       - name: Install NPM packages
         run: npm install
 
@@ -41,4 +49,3 @@ jobs:
         with:
           name: static-site
           path: .next/
-    
